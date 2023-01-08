@@ -18,5 +18,7 @@ spring:
             non_contextual_creation: true
         id:
           new_generator_mappings: true
+  thymeleaf:
+    cache: false
 springdoc:
   pathsToMatch: /api/**
