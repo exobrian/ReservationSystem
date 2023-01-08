@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class HomeController {
 
-    @RequestMapping(method = RequestMethod.GET, value = "/")
+    @GetMapping("/")
     public String index(Model model) {
 
-        return "index.html";
+        return "index";
     }
 }
