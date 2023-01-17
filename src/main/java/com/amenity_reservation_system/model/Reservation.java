@@ -10,6 +10,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
@@ -35,26 +36,29 @@ public class Reservation {
     )
     private Long id;
 
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private OffsetDateTime dateCreated = OffsetDateTime.now();
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private OffsetDateTime lastUpdated = OffsetDateTime.now();
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
     private LocalDate reservationDate;
 
-    @Column(nullable = false)
+    @DateTimeFormat(pattern = "HH:mm")
+    @Column
     private LocalTime startTime;
 
-    @Column(nullable = false)
+    @DateTimeFormat(pattern = "HH:mm")
+    @Column
     private LocalTime endTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private OffsetDateTime dateCreated;
-
-    @LastModifiedDate
-    @Column(nullable = false)
-    private OffsetDateTime lastUpdated;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

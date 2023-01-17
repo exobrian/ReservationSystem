@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,15 +31,10 @@ public class AmenityReservationSystemApplication {
     public CommandLineRunner loadData(UserRepository userRepository,
                                       ReservationRepository reservationRepository) {
         return (args) -> {
+            User user = userRepository.save(new User());
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             Date date = new Date();
             LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            User user = User.builder()
-                    .dateCreated(OffsetDateTime.now())
-                    .lastUpdated(OffsetDateTime.now())
-                    .build();
-            user = userRepository.save(user);
-
             Reservation reservation = Reservation.builder()
                     .reservationDate(localDate)
                     .startTime(LocalTime.of(12, 00))
