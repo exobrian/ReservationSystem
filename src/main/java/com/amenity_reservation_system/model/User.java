@@ -37,15 +37,40 @@ public class User {
     )
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private String fullName;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column
+    private String passwordHash;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Reservation> reservations = new HashSet<>();
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private OffsetDateTime dateCreated = OffsetDateTime.now();
+    private OffsetDateTime dateCreated;
 
     @LastModifiedDate
     @Column(nullable = false)
-    private OffsetDateTime lastUpdated = OffsetDateTime.now();
+    private OffsetDateTime lastUpdated;
 
+    @PrePersist
+    public void prePersist() {
+        dateCreated = OffsetDateTime.now();
+        lastUpdated = dateCreated;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        lastUpdated = OffsetDateTime.now();
+    }
+
+    public User(String fullName, String username, String passwordHash) {
+        this.fullName = fullName;
+        this.username = username;
+        this.passwordHash = passwordHash;
+    }
 }

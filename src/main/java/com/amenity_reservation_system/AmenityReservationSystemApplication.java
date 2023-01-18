@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,21 +32,29 @@ public class AmenityReservationSystemApplication {
     public CommandLineRunner loadData(UserRepository userRepository,
                                       ReservationRepository reservationRepository) {
         return (args) -> {
-            User user = userRepository.save(new User());
+            User user =
+                    userRepository.save(
+                            new User("Brian Tran",
+                                    "briantran",
+                                    bCryptPasswordEncoder().encode("12345")));
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             Date date = new Date();
             LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            Reservation reservation = Reservation.builder()
-                    .reservationDate(localDate)
-                    .startTime(LocalTime.of(12, 00))
-                    .endTime(LocalTime.of(13, 00))
-                    .dateCreated(OffsetDateTime.now())
-                    .lastUpdated(OffsetDateTime.now())
-                    .user(user)
-                    .amenityType(AmenityType.POOL)
-                    .build();
+            Reservation reservation =
+                    Reservation.builder()
+                            .reservationDate(localDate)
+                            .startTime(LocalTime.of(12, 00))
+                            .endTime(LocalTime.of(13, 00))
+                            .user(user)
+                            .amenityType(AmenityType.POOL)
+                            .build();
 
             reservationRepository.save(reservation);
         };
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

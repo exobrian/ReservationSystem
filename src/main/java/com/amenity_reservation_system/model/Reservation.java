@@ -38,11 +38,22 @@ public class Reservation {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private OffsetDateTime dateCreated = OffsetDateTime.now();
+    private OffsetDateTime dateCreated;
 
     @LastModifiedDate
     @Column(nullable = false)
-    private OffsetDateTime lastUpdated = OffsetDateTime.now();
+    private OffsetDateTime lastUpdated;
+
+    @PrePersist
+    public void prePersist() {
+        dateCreated = OffsetDateTime.now();
+        lastUpdated = dateCreated;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        lastUpdated = OffsetDateTime.now();
+    }
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
