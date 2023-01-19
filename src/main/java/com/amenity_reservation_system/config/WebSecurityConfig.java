@@ -26,7 +26,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests()
-                .requestMatchers("/", "/webjars/**").permitAll()
+                .requestMatchers("/", "/webjars/**", "/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -35,6 +35,8 @@ public class WebSecurityConfig {
                 .logout()
                 .permitAll()
                 .logoutSuccessUrl("/");
+        http.csrf().disable();
+        http.headers().frameOptions().sameOrigin();
         return http.build();
     }
 
