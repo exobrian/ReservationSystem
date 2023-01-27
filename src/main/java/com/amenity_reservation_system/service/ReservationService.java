@@ -38,8 +38,16 @@ public class ReservationService {
 
     public Long create(final Reservation reservation) {
         int capacity = capacityRepository.findByAmenityType(reservation.getAmenityType()).getCapacity();
-        int currentReservations = capacityRepository.countByAmenityType(reservation.getAmenityType());
-        if (currentReservations == capacity){
+        int overlappingReservations = reservationRepository.findReservationsByReservationDateAndStartTimeBeforeAndEndTimeAfterOrStartTimeBetween(
+                reservation.getReservationDate(),
+                reservation.getStartTime(),
+                reservation.getEndTime(),
+                reservation.getStartTime(),
+                reservation.getEndTime()
+        ).size();
+
+        System.out.println("Current count for " + reservation.getAmenityType() + " is " + overlappingReservations);
+        if (overlappingReservations > capacity){
             throw new IllegalArgumentException("Current reservations for " + reservation.getAmenityType() + " is full.");
         }
         return reservationRepository.save(reservation).getId();
