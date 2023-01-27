@@ -1,6 +1,10 @@
 # AmenityReservationSystem
-
-This app was created with Bootify.io - more documentation [can be found here](https://bootify.io/docs/). Feel free to contact us for further questions.
+This is a fairly simple application to practice both backend and front end skills.
+It will create a landing page hosted on a local machine that allows the user to login to a secured database to create reservations for different amenities.
+The code mainly uses the Java Spring Boot framework along with Thymeleaf, Bootstrap, and Bootify frameworks to get up and running.
+Currently, the only user that is authenticated is: <br>
+> Username: briantran <br>
+> Password: 12345
 
 ## Development
 
